@@ -35,8 +35,8 @@ module Fluent
 
         def emit(tag, es, chain)
             chain.next
-            es.each {|event|
-                msg = @queue.send.message(event)
+            es.each {|record|
+                msg = @queue.send_message(record)
                 $stderr.puts "sent message: #{msg.id}"
             }
         end
