@@ -14,14 +14,17 @@ Store fluent-event as queue message to amazon SQS.
 === SQSOutput
 
     <match sqs.**>
+
       type sqs
+
+      # following attibutes are required
+
       aws_key_id {your_aws_key_id}
       aws_sec_key {your_aws_secret_key}
     　queue_instance_key {queue_instance_key}
 
       # following attibutes are optional
 
-      # Other buffer configurations here
     </match>
 
 == TODO
