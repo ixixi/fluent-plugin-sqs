@@ -1,0 +1,37 @@
+= Amazon SQS output plugin for Fluent
+
+== Install
+ $ gem install fluent-plugin-sqs
+
+== Component
+
+=== SQSOutput
+
+Store fluent-event as queue message to amazon SQS.
+
+== Configuratin
+
+=== SQSOutput
+
+    <match sqs.**>
+      type sqs
+      aws_key_id {your_aws_key_id}
+      aws_sec_key {your_aws_secret_key}
+    　queue_instance_key {queue_instance_key}
+
+      # following attibutes are optional
+
+      # Other buffer configurations here
+    </match>
+
+== TODO
+ - implement!
+
+=== More configuration
+
+== Tool
+
+== Copyright
+
+Copyright:: Copyright (c) 2011- Yudai Odagiri
+License::   Apache License, Version 2.0
