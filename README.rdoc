@@ -21,14 +21,22 @@ Store fluent-event as queue message to amazon SQS.
 
       aws_key_id {your_aws_key_id}
       aws_sec_key {your_aws_secret_key}
-    　queue_instance_key {queue_instance_key}
+    　queue_name {queue_instance_key}
 
       # following attibutes are optional
+    　
+      sqs_endpoint {endpointURL}
+
+      ###endpoint list###
+      #Tokyo(Default) : sqs.ap-northeast-1.amazonaws.com
+      #Singapore : sqs.ap-southeast-1.amazonaws.com
+      #US-East : sqs.us-east-1.amazonaws.com
+      #US-West : sqs.us-west-1.amazonaws.com
+      #EU-West : sqs.eu-west-1.amazonaws.com
 
     </match>
 
 == TODO
- - implement!
 
 === More configuration
 
