@@ -27,12 +27,12 @@ Store fluent-event as queue message to amazon SQS.
     　
       sqs_endpoint {endpointURL}
 
-      ###endpoint list###
-      #Tokyo(Default) : sqs.ap-northeast-1.amazonaws.com
-      #Singapore : sqs.ap-southeast-1.amazonaws.com
-      #US-East : sqs.us-east-1.amazonaws.com
-      #US-West : sqs.us-west-1.amazonaws.com
-      #EU-West : sqs.eu-west-1.amazonaws.com
+      ### endpoint list ###
+      # Tokyo(Default) : sqs.ap-northeast-1.amazonaws.com
+      # Singapore : sqs.ap-southeast-1.amazonaws.com
+      # US-East : sqs.us-east-1.amazonaws.com
+      # US-West : sqs.us-west-1.amazonaws.com
+      # EU-West : sqs.eu-west-1.amazonaws.com
 
     </match>
 
