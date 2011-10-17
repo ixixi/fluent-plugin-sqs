@@ -1,8 +1,7 @@
 module Fluent
     
     require 'aws-sdk'
-    require 'msgpack'
-
+    
     class SQSOutput < Output
         
         Fluent::Plugin.register_output('sqs', self)
