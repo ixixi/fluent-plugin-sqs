@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fluent-plugin-sqs}
-  s.version = "0.2.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Yudai Odagiri}]
-  s.date = %q{2011-10-16}
+  s.date = %q{2011-10-17}
   s.email = %q{ixixizko@gmail.com}
   s.extra_rdoc_files = [
     "README.rdoc"

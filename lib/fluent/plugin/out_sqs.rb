@@ -1,9 +1,9 @@
 module Fluent
-    
+
     require 'aws-sdk'
-    
+
     class SQSOutput < Output
-        
+
         Fluent::Plugin.register_output('sqs', self)
 
         include SetTagKeyMixin
@@ -11,10 +11,10 @@ module Fluent
 
         include SetTimeKeyMixin
         config_set_default :include_time_key, true
-        
+
         config_param :aws_key_id, :string
         config_param :aws_sec_key, :string
-        config_param :queue_instance_key, :string
+        config_param :queue_name, :string
 
 
         def configure(conf)
@@ -26,7 +26,7 @@ module Fluent
             @sqs = AWS::SQS.new(
                 :access_key_id => @aws_key_id,
                 :secret_access_key => @aws_sec_key )
-            @queue = @sqs.queues.create(@queue_instance_key)
+                @queue = @sqs.queues.create(@queue_name)
         end
 
         def shutdown
@@ -34,11 +34,12 @@ module Fluent
         end
 
         def emit(tag, es, chain)
-            chain.next
-            es.each {|record|
-                msg = @queue.send_message(record)
+            es.each {|time,record|
+                record["time"] = Time.at(time).localtime
+                msg = @queue.send_message(record.to_json)
                 $stderr.puts "sent message: #{msg.id}"
             }
+            chain.next
         end
 
     end
