@@ -4,7 +4,7 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{fluent-plugin-couch}
+  s.name = %q{fluent-plugin-sqs}
   s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -18,12 +18,12 @@ Gem::Specification.new do |s|
     "AUTHORS",
     "Rakefile",
     "VERSION",
-    "lib/fluent/plugin/out_couch.rb"
+    "lib/fluent/plugin/out_sqs.rb"
   ]
   s.homepage = %q{http://github.com/fluent}
   s.require_paths = [%q{lib}]
   s.rubygems_version = %q{1.8.7}
-  s.summary = %q{CouchDB output plugin for Fluent event collector}
+  s.summary = %q{Amazon SQS output plugin for Fluent event collector}
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
