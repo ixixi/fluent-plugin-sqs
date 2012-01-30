@@ -42,7 +42,6 @@ Store fluent-event as queue message to amazon SQS.
 
 === More configuration
 * batch insert -> http://aws.typepad.com/aws/2011/10/amazon-simple-queue-service-batch-operations-delay-queue-and-message-timers.html
-* update document ( can be used to handle event-logs such as updating the status of the server.)
 
 === input plugin
 
