@@ -34,6 +34,7 @@ Store fluent-event as queue message to amazon SQS.
       # US-West (Oregon)               : sqs.us-west-2.amazonaws.com
       # US-West (N.California)         : sqs.us-west-1.amazonaws.com
       # EU-West (Ireland)              : sqs.eu-west-1.amazonaws.com
+      # South America (São Paulo)      : sns.sa-east-1.amazonaws.com
 
     </match>
 
