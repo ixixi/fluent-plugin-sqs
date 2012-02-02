@@ -36,12 +36,11 @@ Store fluent-event as queue message to amazon SQS.
       # EU-West (Ireland)              : sqs.eu-west-1.amazonaws.com
       # South America (São Paulo)      : sns.sa-east-1.amazonaws.com
 
+      delay_seconds {delivery_deley_seconds}
+
     </match>
 
 == TODO
-
-=== More configuration
-* batch insert -> http://aws.typepad.com/aws/2011/10/amazon-simple-queue-service-batch-operations-delay-queue-and-message-timers.html
 
 === input plugin
 
