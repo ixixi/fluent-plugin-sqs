@@ -34,11 +34,6 @@ module Fluent
             @sqs = AWS::SQS.new
             @queue = @sqs.queues.create(@queue_name)
             
-            loop do
-                records = [{ :message_body => "abcdefg"},{ :message_body => "12345"}]
-                @queue.batch_send(records)
-            end
-
         end
 
         def shutdown
