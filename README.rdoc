@@ -21,24 +21,29 @@ Store fluent-event as queue message to amazon SQS.
 
       aws_key_id {your_aws_key_id}
       aws_sec_key {your_aws_secret_key}
-    　queue_name {queue_instance_key}
+      queue_name {queue_instance_key}
 
       # following attibutes are optional
     　
       sqs_endpoint {endpointURL}
 
       ### endpoint list ###
-      # Tokyo(Default) : sqs.ap-northeast-1.amazonaws.com
-      # Singapore : sqs.ap-southeast-1.amazonaws.com
-      # US-East : sqs.us-east-1.amazonaws.com
-      # US-West : sqs.us-west-1.amazonaws.com
-      # EU-West : sqs.eu-west-1.amazonaws.com
+      # Asia Pacific (Tokyo) [Default] : sqs.ap-northeast-1.amazonaws.com
+      # Asia Pacific (Singapore)       : sqs.ap-southeast-1.amazonaws.com
+      # US-East (Virginia)             : sqs.us-east-1.amazonaws.com
+      # US-West (Oregon)               : sqs.us-west-2.amazonaws.com
+      # US-West (N.California)         : sqs.us-west-1.amazonaws.com
+      # EU-West (Ireland)              : sqs.eu-west-1.amazonaws.com
+      # South America (São Paulo)      : sns.sa-east-1.amazonaws.com
 
     </match>
 
 == TODO
 
 === More configuration
+* batch insert -> http://aws.typepad.com/aws/2011/10/amazon-simple-queue-service-batch-operations-delay-queue-and-message-timers.html
+
+=== input plugin
 
 == Tool
 
