@@ -9,7 +9,7 @@ begin
     gemspec.summary = "Amazon SQS output plugin for Fluent event collector"
     gemspec.author = "Yudai Odagiri"
     gemspec.email = "ixixizko@gmail.com"
-    gemspec.homepage = "http://github.com/fluent"
+    gemspec.homepage = "https://github.com/ixixi/fluent-plugin-sqs"
     gemspec.has_rdoc = false
     gemspec.require_paths = ["lib"]
     gemspec.add_dependency "fluentd", "~> 0.10.0"
