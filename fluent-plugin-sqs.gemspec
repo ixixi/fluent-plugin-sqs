@@ -4,13 +4,13 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{fluent-plugin-sqs}
-  s.version = "0.2.0"
+  s.name = "fluent-plugin-sqs"
+  s.version = "0.2.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Yudai Odagiri}]
-  s.date = %q{2012-02-02}
-  s.email = %q{ixixizko@gmail.com}
+  s.authors = ["Yudai Odagiri"]
+  s.date = "2013-06-15"
+  s.email = "ixixizko@gmail.com"
   s.extra_rdoc_files = [
     "README.rdoc"
   ]
@@ -20,10 +20,10 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/fluent/plugin/out_sqs.rb"
   ]
-  s.homepage = %q{http://github.com/fluent}
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.7}
-  s.summary = %q{Amazon SQS output plugin for Fluent event collector}
+  s.homepage = "https://github.com/ixixi/fluent-plugin-sqs"
+  s.require_paths = ["lib"]
+  s.rubygems_version = "1.8.23"
+  s.summary = "Amazon SQS output plugin for Fluent event collector"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
