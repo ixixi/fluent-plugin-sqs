@@ -18,7 +18,8 @@ Gem::Specification.new do |s|
     "AUTHORS",
     "Rakefile",
     "VERSION",
-    "lib/fluent/plugin/out_sqs.rb"
+    "lib/fluent/plugin/out_sqs.rb",
+    "lib/fluent/plugin/in_sqs.rb",
   ]
   s.homepage = "https://github.com/ixixi/fluent-plugin-sqs"
   s.require_paths = ["lib"]
@@ -39,5 +40,10 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<fluentd>, ["~> 0.10.0"])
     s.add_dependency(%q<aws-sdk>, ["~> 1.3.2"])
   end
+  s.add_development_dependency "bundler"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "rr"
+  s.add_development_dependency "pry"
+  s.add_development_dependency "jeweler"
 end
-
