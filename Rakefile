@@ -14,8 +14,8 @@ begin
     gemspec.require_paths = ["lib"]
     gemspec.add_dependency "fluentd", "~> 0.10.0"
     gemspec.add_dependency "aws-sdk", "~> 1.3.2"
-    gemspec.test_files = Dir["test/**/*.rb"]
-    gemspec.files = Dir["lib/**/*", "test/**/*.rb"] + %w[VERSION AUTHORS Rakefile]
+    gemspec.test_files = Dir["test/**/*.rb", "spec/**/*.rb"]
+    gemspec.files = Dir["lib/**/*", "test/**/*.rb", "spec/**/*.rb"] + %w[VERSION AUTHORS Rakefile]
     gemspec.executables = []
   end
   Jeweler::GemcutterTasks.new
