@@ -46,3 +46,6 @@ bulkloader-log-*
 lex.yy.c
 *.tab.c
 *.tab.h
+
+# Gemfile.lock
+Gemfile.lock
