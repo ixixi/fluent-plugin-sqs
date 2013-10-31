@@ -77,5 +77,5 @@ Read events from from amazon SQS.
 
 == Copyright
 
-Copyright:: Copyright (c) 2011- Yudai Odagiri
+Copyright:: Copyright (c) 2011- Yuri Odagiri
 License::   Apache License, Version 2.0
