@@ -26,10 +26,10 @@ module Fluent
 
       AWS.config(
         :access_key_id => @aws_key_id,
-        :secret_access_key => @aws_sec_key,
-        :sqs_endpoint => @sqs_endpoint )
+        :secret_access_key => @aws_sec_key
+        )
 
-      @queue = AWS::SQS.new.queues[@sqs_url]
+      @queue = AWS::SQS.new(:sqs_endpoint => @sqs_endpoint).queues[@sqs_url]
 
       @finished = false
       @thread = Thread.new(&method(:run_periodic))
