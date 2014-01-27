@@ -47,7 +47,7 @@ module Fluent
         def write(chunk)
             p chunk.inspect
             p @sqs_endpoint
-            p @sqs.inspect
+            p @sqs.client.inspect
             
             records = []
             chunk.msgpack_each {|record| records << { :message_body => record.to_json, :delay_seconds => @delay_seconds } }
