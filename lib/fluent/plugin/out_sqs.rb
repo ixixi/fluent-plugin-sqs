@@ -45,6 +45,10 @@ module Fluent
         end
         
         def write(chunk)
+            p chunk.inspect
+            p @sqs_endpoint
+            p @sqs.inspect
+            
             records = []
             chunk.msgpack_each {|record| records << { :message_body => record.to_json, :delay_seconds => @delay_seconds } }
             until records.length <= 0 do
