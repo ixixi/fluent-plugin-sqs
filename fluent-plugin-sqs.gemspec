@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "fluent-plugin-sqs"
-  s.version = "0.2.3"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Yudai Odagiri"]
@@ -31,14 +31,14 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<fluentd>, ["~> 0.10.0"])
-      s.add_runtime_dependency(%q<aws-sdk>, ["~> 1.3.2"])
+      s.add_runtime_dependency(%q<aws-sdk>, ["~> 1.9.5"])
     else
       s.add_dependency(%q<fluentd>, ["~> 0.10.0"])
-      s.add_dependency(%q<aws-sdk>, ["~> 1.3.2"])
+      s.add_dependency(%q<aws-sdk>, ["~> 1.9.5"])
     end
   else
     s.add_dependency(%q<fluentd>, ["~> 0.10.0"])
-    s.add_dependency(%q<aws-sdk>, ["~> 1.3.2"])
+    s.add_dependency(%q<aws-sdk>, ["~> 1.9.5"])
   end
   s.add_development_dependency "bundler"
   s.add_development_dependency "rake"
