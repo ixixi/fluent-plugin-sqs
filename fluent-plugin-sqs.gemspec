@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.version = "1.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Yudai Odagiri"]
-  s.date = "2013-06-15"
+  s.authors = ["Yuri Odagiri"]
+  s.date = "2014-01-29"
   s.email = "ixixizko@gmail.com"
   s.extra_rdoc_files = [
     "README.rdoc"
@@ -18,32 +18,51 @@ Gem::Specification.new do |s|
     "AUTHORS",
     "Rakefile",
     "VERSION",
-    "lib/fluent/plugin/out_sqs.rb",
     "lib/fluent/plugin/in_sqs.rb",
+    "lib/fluent/plugin/out_sqs.rb",
+    "spec/lib/fluent/plugin/in_sqs_spec.rb",
+    "spec/spec_helper.rb"
   ]
   s.homepage = "https://github.com/ixixi/fluent-plugin-sqs"
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.23"
   s.summary = "Amazon SQS output plugin for Fluent event collector"
+  s.test_files = ["spec/lib/fluent/plugin/in_sqs_spec.rb", "spec/spec_helper.rb"]
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<jeweler>, [">= 0"])
+      s.add_runtime_dependency(%q<fluent-plugin-sqs>, [">= 0"])
+      s.add_development_dependency(%q<bundler>, [">= 0"])
+      s.add_development_dependency(%q<rake>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_development_dependency(%q<rr>, [">= 0"])
+      s.add_development_dependency(%q<pry>, [">= 0"])
       s.add_runtime_dependency(%q<fluentd>, ["~> 0.10.0"])
-      s.add_runtime_dependency(%q<aws-sdk>, ["~> 1.9.5"])
+      s.add_runtime_dependency(%q<aws-sdk>, ["~> 1.3.2"])
     else
+      s.add_dependency(%q<jeweler>, [">= 0"])
+      s.add_dependency(%q<fluent-plugin-sqs>, [">= 0"])
+      s.add_dependency(%q<bundler>, [">= 0"])
+      s.add_dependency(%q<rake>, [">= 0"])
+      s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<rr>, [">= 0"])
+      s.add_dependency(%q<pry>, [">= 0"])
       s.add_dependency(%q<fluentd>, ["~> 0.10.0"])
-      s.add_dependency(%q<aws-sdk>, ["~> 1.9.5"])
+      s.add_dependency(%q<aws-sdk>, ["~> 1.3.2"])
     end
   else
+    s.add_dependency(%q<jeweler>, [">= 0"])
+    s.add_dependency(%q<fluent-plugin-sqs>, [">= 0"])
+    s.add_dependency(%q<bundler>, [">= 0"])
+    s.add_dependency(%q<rake>, [">= 0"])
+    s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<rr>, [">= 0"])
+    s.add_dependency(%q<pry>, [">= 0"])
     s.add_dependency(%q<fluentd>, ["~> 0.10.0"])
-    s.add_dependency(%q<aws-sdk>, ["~> 1.9.5"])
+    s.add_dependency(%q<aws-sdk>, ["~> 1.3.2"])
   end
-  s.add_development_dependency "bundler"
-  s.add_development_dependency "rake"
-  s.add_development_dependency "rspec"
-  s.add_development_dependency "rr"
-  s.add_development_dependency "pry"
-  s.add_development_dependency "jeweler"
 end
+
