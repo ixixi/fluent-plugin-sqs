@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "fluent-plugin-sqs"
-  s.version = "1.2.1"
+  s.version = "1.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Yuri Odagiri"]
@@ -33,36 +33,20 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<jeweler>, [">= 0"])
-      s.add_runtime_dependency(%q<fluent-plugin-sqs>, [">= 0"])
-      s.add_development_dependency(%q<bundler>, [">= 0"])
-      s.add_development_dependency(%q<rake>, [">= 0"])
-      s.add_development_dependency(%q<rspec>, [">= 0"])
-      s.add_development_dependency(%q<rr>, [">= 0"])
-      s.add_development_dependency(%q<pry>, [">= 0"])
       s.add_runtime_dependency(%q<fluentd>, ["~> 0.10.0"])
-      s.add_runtime_dependency(%q<aws-sdk>, ["~> 1.3.2"])
+      s.add_runtime_dependency(%q<aws-sdk>, ["~> 1.9.5"])
     else
-      s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<fluent-plugin-sqs>, [">= 0"])
-      s.add_dependency(%q<bundler>, [">= 0"])
-      s.add_dependency(%q<rake>, [">= 0"])
-      s.add_dependency(%q<rspec>, [">= 0"])
-      s.add_dependency(%q<rr>, [">= 0"])
-      s.add_dependency(%q<pry>, [">= 0"])
       s.add_dependency(%q<fluentd>, ["~> 0.10.0"])
-      s.add_dependency(%q<aws-sdk>, ["~> 1.3.2"])
+      s.add_dependency(%q<aws-sdk>, ["~> 1.9.5"])
     end
   else
-    s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<fluent-plugin-sqs>, [">= 0"])
-    s.add_dependency(%q<bundler>, [">= 0"])
-    s.add_dependency(%q<rake>, [">= 0"])
-    s.add_dependency(%q<rspec>, [">= 0"])
-    s.add_dependency(%q<rr>, [">= 0"])
-    s.add_dependency(%q<pry>, [">= 0"])
     s.add_dependency(%q<fluentd>, ["~> 0.10.0"])
-    s.add_dependency(%q<aws-sdk>, ["~> 1.3.2"])
+    s.add_dependency(%q<aws-sdk>, ["~> 1.9.5"])
   end
+  s.add_development_dependency "bundler"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "rr"
+  s.add_development_dependency "pry"
+  s.add_development_dependency "jeweler"
 end
-
