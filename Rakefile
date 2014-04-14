@@ -6,7 +6,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
     gemspec.name = "fluent-plugin-sqs"
-    gemspec.summary = "Amazon SQS output plugin for Fluent event collector"
+    gemspec.summary = "Amazon SQS input/output plugin for Fluent event collector"
     gemspec.author = "Yuri Odagiri"
     gemspec.email = "ixixizko@gmail.com"
     gemspec.homepage = "https://github.com/ixixi/fluent-plugin-sqs"

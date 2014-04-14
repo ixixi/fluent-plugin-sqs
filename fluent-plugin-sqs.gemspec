@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Yuri Odagiri"]
-  s.date = "2014-01-29"
+  s.date = "2014-04-13"
   s.email = "ixixizko@gmail.com"
   s.extra_rdoc_files = [
     "README.rdoc"
@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/ixixi/fluent-plugin-sqs"
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.23"
-  s.summary = "Amazon SQS output plugin for Fluent event collector"
+  s.summary = "Amazon SQS input/output plugin for Fluent event collector"
   s.test_files = ["spec/lib/fluent/plugin/in_sqs_spec.rb", "spec/spec_helper.rb"]
 
   if s.respond_to? :specification_version then
@@ -34,7 +34,6 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<jeweler>, [">= 0"])
-      s.add_runtime_dependency(%q<fluent-plugin-sqs>, [">= 0"])
       s.add_development_dependency(%q<bundler>, [">= 0"])
       s.add_development_dependency(%q<rake>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
@@ -44,7 +43,6 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<aws-sdk>, ["~> 1.3.2"])
     else
       s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<fluent-plugin-sqs>, [">= 0"])
       s.add_dependency(%q<bundler>, [">= 0"])
       s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
@@ -55,7 +53,6 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<fluent-plugin-sqs>, [">= 0"])
     s.add_dependency(%q<bundler>, [">= 0"])
     s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
