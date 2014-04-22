@@ -17,6 +17,8 @@ module Fluent
         config_param :queue_name, :string
         config_param :sqs_endpoint, :string, :default => 'sqs.ap-northeast-1.amazonaws.com'
         config_param :delay_seconds, :integer, :default => 0
+        config_param :include_tag, :bool, :default => true
+        config_param :tag_property_name, :string, :default => '__tag'
         #config_param :buffer_queue_limit, :integer, :default => 10
         
         def configure(conf)
@@ -41,6 +43,10 @@ module Fluent
         end
         
         def format(tag, time, record)
+            if @include_tag then
+                record[@tag_property_name] = tag
+            end
+
             record.to_msgpack
         end
         
