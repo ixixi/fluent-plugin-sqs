@@ -42,6 +42,9 @@ Read events from from amazon SQS.
 
       delay_seconds {delivery_deley_seconds}
 
+      include_tag {boolean}
+      tag_property_name {tag's property name in json}
+
     </match>
 
 === SQSInput
