@@ -23,9 +23,12 @@ Read events from from amazon SQS.
 
       # following attibutes are required
 
+      queue_name {queue_instance_key}
+
+      # following attibutes are required if you don't use IAM Role nor export credentials to ENV
+
       aws_key_id {your_aws_key_id}
       aws_sec_key {your_aws_secret_key}
-      queue_name {queue_instance_key}
 
       # following attibutes are optional
     　
@@ -55,9 +58,12 @@ Read events from from amazon SQS.
 
       # following attibutes are required
 
+      sqs_url {queue_url}
+
+      # following attibutes are required if you don't use IAM Role nor export credentials to ENV
+
       aws_key_id {your_aws_key_id}
       aws_sec_key {your_aws_secret_key}
-      sqs_url {queue_url}
 
       # following attibutes are optional
     　
