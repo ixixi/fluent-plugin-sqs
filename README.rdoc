@@ -32,6 +32,7 @@ Read events from from amazon SQS.
 
       # following attibutes are optional
     　
+      create_queue {boolean}
       sqs_endpoint {endpointURL}
 
       ### endpoint list ###
@@ -47,6 +48,7 @@ Read events from from amazon SQS.
 
       include_tag {boolean}
       tag_property_name {tag's property name in json}
+
 
     </match>
 
