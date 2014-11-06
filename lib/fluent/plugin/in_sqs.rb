@@ -48,12 +48,12 @@ module Fluent
           sleep @receive_interval
           @queue.receive_message do |message|
             record = {}
-            record[:body] = message.body.to_s
-            record[:handle] = message.handle.to_s
-            record[:id] = message.id.to_s
-            record[:md5] = message.md5.to_s
-            record[:url] = message.queue.url.to_s
-            record[:sender_id] = message.sender_id.to_s
+            record['body'] = message.body.to_s
+            record['handle'] = message.handle.to_s
+            record['id'] = message.id.to_s
+            record['md5'] = message.md5.to_s
+            record['url'] = message.queue.url.to_s
+            record['sender_id'] = message.sender_id.to_s
 
             Engine.emit(@tag, Time.now.to_i, record)
           end

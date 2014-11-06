@@ -45,27 +45,27 @@ describe do
   
   describe 'emit' do
     let(:message) do
-      { :body => 'body',
-        :handle => 'handle',
-        :id => 'id',
-        :md5 => 'md5',
-        :url => 'url',
-        :sender_id => 'sender_id'
+      { 'body' => 'body',
+        'handle' => 'handle',
+        'id' => 'id',
+        'md5' => 'md5',
+        'url' => 'url',
+        'sender_id' => 'sender_id'
       }
     end
     let(:emmits) {
-      stub(Time).now {0}
+      allow(Time).to receive(:now).and_return(0)
 
       class AWS::SQS::Queue
         def receive_message
           yield OpenStruct.new(
-            { :body => 'body',
-              :handle => 'handle',
-              :id => 'id',
-              :md5 => 'md5',
-              :queue => OpenStruct.new(:url => 'url'),
-              :sender_id => 'sender_id',
-              :sent_at => 0
+            { 'body' => 'body',
+              'handle' => 'handle',
+              'id' => 'id',
+              'md5' => 'md5',
+              'queue' => OpenStruct.new(:url => 'url'),
+              'sender_id' => 'sender_id',
+              'sent_at' => 0
             })
         end
       end
