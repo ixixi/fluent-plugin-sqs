@@ -14,6 +14,7 @@ describe do
          aws_sec_key AWS_SEC_KEY
          tag     TAG
          sqs_url SQS_URL
+         max_number_of_messages 10
       ]
     }
     
@@ -41,6 +42,11 @@ describe do
       subject {instance.receive_interval}
       it{should == 1}
     end
+
+    context do
+      subject {instance.max_number_of_messages}
+      it{should == 10}
+    end
   end
   
   describe 'emit' do
@@ -57,7 +63,7 @@ describe do
       allow(Time).to receive(:now).and_return(0)
 
       class AWS::SQS::Queue
-        def receive_message
+        def receive_message(opts)
           yield OpenStruct.new(
             { 'body' => 'body',
               'handle' => 'handle',
@@ -69,11 +75,13 @@ describe do
             })
         end
       end
+      expect_any_instance_of(AWS::SQS::Queue).to receive(:receive_message).with({:limit => 10}).at_least(:once).and_call_original
+
       d = driver
       d.run do
         sleep 2
       end
-      
+
       d.emits
     }
 
@@ -84,6 +92,7 @@ describe do
            aws_sec_key AWS_SEC_KEY
            tag     TAG
            sqs_url SQS_URL
+           max_number_of_messages 10
         ]
       }
 
