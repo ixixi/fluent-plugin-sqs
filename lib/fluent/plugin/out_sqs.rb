@@ -57,11 +57,7 @@ module Fluent
             records = []
             chunk.msgpack_each {|record| records << { :message_body => record.to_json, :delay_seconds => @delay_seconds } }
             until records.length <= 0 do
-                begin
-                    @queue.batch_send(records.slice!(0..9))
-                rescue => e
-                    $stderr.puts e
-                end
+                @queue.batch_send(records.slice!(0..9))
             end
         end
     end
