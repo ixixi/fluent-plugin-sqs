@@ -55,7 +55,7 @@ module Fluent
 
         def write(chunk)
             records = []
-            chunk.msgpack_each {|record| records << { :message_body => record.to_json, :delay_seconds => @delay_seconds } }
+            chunk.msgpack_each {|record| records << { :message_body => Yajl.dump(record), :delay_seconds => @delay_seconds } }
             until records.length <= 0 do
                 @queue.batch_send(records.slice!(0..9))
             end
