@@ -49,4 +49,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rr"
   s.add_development_dependency "pry"
   s.add_development_dependency "jeweler"
+  s.add_development_dependency "test-unit", ">= 3.0.0"
 end
