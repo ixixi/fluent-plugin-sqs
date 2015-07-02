@@ -9,8 +9,8 @@ module Fluent
       super
     end
 
-    config_param :aws_key_id, :string, :default => nil
-    config_param :aws_sec_key, :string, :default => nil
+    config_param :aws_key_id, :string, :default => nil, :secret => true
+    config_param :aws_sec_key, :string, :default => nil, :secret => true
     config_param :tag, :string
     config_param :sqs_endpoint, :string, :default => 'sqs.ap-northeast-1.amazonaws.com'
     config_param :sqs_url, :string
