@@ -3,6 +3,7 @@ require 'spec_helper'
 describe do
   let(:driver) {
     AWS.stub!
+    Fluent::Test.setup
     Fluent::Test::InputTestDriver.new(Fluent::SQSInput).configure(config)
   }
   let(:instance) {driver.instance}
