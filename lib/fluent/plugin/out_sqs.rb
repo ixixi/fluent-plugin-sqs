@@ -12,8 +12,8 @@ module Fluent
         include SetTimeKeyMixin
         config_set_default :include_time_key, true
 
-        config_param :aws_key_id, :string, :default => nil
-        config_param :aws_sec_key, :string, :default => nil
+        config_param :aws_key_id, :string, :default => nil, :secret => true
+        config_param :aws_sec_key, :string, :default => nil, :secret => true
         config_param :queue_name, :string
         config_param :create_queue, :bool, :default => true
         config_param :sqs_endpoint, :string, :default => 'sqs.ap-northeast-1.amazonaws.com'
