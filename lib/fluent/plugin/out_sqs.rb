@@ -1,6 +1,7 @@
 module Fluent
 
     require 'aws-sdk'
+    require 'objspace'
 
     class SQSOutput < BufferedOutput
 
@@ -20,6 +21,7 @@ module Fluent
         config_param :delay_seconds, :integer, :default => 0
         config_param :include_tag, :bool, :default => true
         config_param :tag_property_name, :string, :default => '__tag'
+	config_param :max_size, :integer, :default => 256000
 
         def configure(conf)
             super
@@ -55,7 +57,13 @@ module Fluent
 
         def write(chunk)
             records = []
-            chunk.msgpack_each {|record| records << { :message_body => Yajl.dump(record), :delay_seconds => @delay_seconds } }
+            chunk.msgpack_each {|record|
+                if ObjectSpace.memsize_of(record) < @max_size
+                    records << { :message_body => Yajl.dump(record), :delay_seconds => @delay_seconds }
+                else
+                    log.info "Could not send log to SQS: the size of log exceeded max_size"
+                end
+            }
             until records.length <= 0 do
                 @queue.batch_send(records.slice!(0..9))
             end
