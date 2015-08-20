@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.authors = ["Yuri Odagiri"]
   s.date = "2015-07-03"
   s.email = "ixixizko@gmail.com"
+  s.license = "Apache-2.0"
   s.extra_rdoc_files = [
     "README.rdoc"
   ]
