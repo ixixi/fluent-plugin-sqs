@@ -16,6 +16,7 @@ describe do
          tag     TAG
          sqs_url SQS_URL
          max_number_of_messages 10
+         wait_time_seconds 10
       ]
     }
     
@@ -46,6 +47,11 @@ describe do
 
     context do
       subject {instance.max_number_of_messages}
+      it{should == 10}
+    end
+
+    context do
+      subject {instance.wait_time_seconds}
       it{should == 10}
     end
   end
@@ -94,6 +100,7 @@ describe do
            tag     TAG
            sqs_url SQS_URL
            max_number_of_messages 10
+           wait_time_seconds 10
         ]
       }
 

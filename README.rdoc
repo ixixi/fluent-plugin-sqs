@@ -44,7 +44,7 @@ Read events from from amazon SQS.
       # EU-West (Ireland)              : sqs.eu-west-1.amazonaws.com
       # South America (São Paulo)      : sns.sa-east-1.amazonaws.com
 
-      delay_seconds {delivery_deley_seconds}
+      delay_seconds {delivery_delay_seconds}
 
       include_tag {boolean}
       tag_property_name {tag's property name in json}
@@ -81,6 +81,10 @@ Read events from from amazon SQS.
       # South America (São Paulo)      : sns.sa-east-1.amazonaws.com
 
       receive_interval {receive_interval_seconds}
+
+      max_number_of_messages {max_number_of_messages}
+
+      wait_time_seconds {receive_message_wait_time_seconds}
 
     </source>
 

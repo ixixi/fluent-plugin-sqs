@@ -14,8 +14,9 @@ module Fluent
     config_param :tag, :string
     config_param :sqs_endpoint, :string, :default => 'sqs.ap-northeast-1.amazonaws.com'
     config_param :sqs_url, :string
-    config_param :receive_interval, :time, :default => 1
-    config_param :max_number_of_messages, :integer, :default => 1
+    config_param :receive_interval, :time, :default => 0.1
+    config_param :max_number_of_messages, :integer, :default => 10
+    config_param :wait_time_seconds, :integer, :default => 10
 
     def configure(conf)
       super
@@ -47,7 +48,10 @@ module Fluent
       until @finished
         begin
           sleep @receive_interval
-          @queue.receive_message(:limit => @max_number_of_messages) do |message|
+          @queue.receive_message(
+            :limit => @max_number_of_messages,
+            :wait_time_seconds => @wait_time_seconds
+          ) do |message|
             record = {}
             record['body'] = message.body.to_s
             record['handle'] = message.handle.to_s
