@@ -42,7 +42,7 @@ describe do
 
     context do
       subject {instance.receive_interval}
-      it{should == 1}
+      it{should == 0.1}
     end
 
     context do
@@ -82,7 +82,7 @@ describe do
             })
         end
       end
-      expect_any_instance_of(AWS::SQS::Queue).to receive(:receive_message).with({:limit => 10}).at_least(:once).and_call_original
+      expect_any_instance_of(AWS::SQS::Queue).to receive(:receive_message).with({:limit => 10, :wait_time_seconds=>10}).at_least(:once).and_call_original
 
       d = driver
       d.run do
