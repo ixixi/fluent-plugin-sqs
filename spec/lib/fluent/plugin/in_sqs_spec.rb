@@ -16,6 +16,7 @@ describe do
          tag     TAG
          sqs_url SQS_URL
          max_number_of_messages 10
+         wait_time_seconds 10
       ]
     }
     
@@ -41,11 +42,16 @@ describe do
 
     context do
       subject {instance.receive_interval}
-      it{should == 1}
+      it{should == 0.1}
     end
 
     context do
       subject {instance.max_number_of_messages}
+      it{should == 10}
+    end
+
+    context do
+      subject {instance.wait_time_seconds}
       it{should == 10}
     end
   end
@@ -76,7 +82,7 @@ describe do
             })
         end
       end
-      expect_any_instance_of(AWS::SQS::Queue).to receive(:receive_message).with({:limit => 10}).at_least(:once).and_call_original
+      expect_any_instance_of(AWS::SQS::Queue).to receive(:receive_message).with({:limit => 10, :wait_time_seconds=>10}).at_least(:once).and_call_original
 
       d = driver
       d.run do
@@ -94,6 +100,7 @@ describe do
            tag     TAG
            sqs_url SQS_URL
            max_number_of_messages 10
+           wait_time_seconds 10
         ]
       }
 
