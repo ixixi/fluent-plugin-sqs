@@ -5,6 +5,10 @@ module Fluent
   class SQSInput < Input
     Plugin.register_input('sqs', self)
 
+    unless method_defined?(:router)
+      define_method("router") { Fluent::Engine }
+    end
+
     def initialize
       super
     end
@@ -60,7 +64,7 @@ module Fluent
             record['url'] = message.queue.url.to_s
             record['sender_id'] = message.sender_id.to_s
 
-            Engine.emit(@tag, Time.now.to_i, record)
+            router.emit(@tag, Time.now.to_i, record)
           end
         rescue
           $log.error "failed to emit or receive", :error => $!.to_s, :error_class => $!.class.to_s
