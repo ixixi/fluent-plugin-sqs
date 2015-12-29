@@ -1,6 +1,6 @@
 module Fluent
 
-  require 'aws-sdk'
+  require 'aws-sdk-v1'
 
   class SQSInput < Input
     Plugin.register_input('sqs', self)
