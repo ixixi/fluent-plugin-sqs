@@ -22,4 +22,6 @@ RSpec.configure do |config|
   require 'ostruct'
   require 'pry'
   require 'rr'
+  # prevent Test::Unit's AutoRunner from executing during RSpec's rake task
+  Test::Unit.run = true if defined?(Test::Unit) && Test::Unit.respond_to?(:run=)
 end
