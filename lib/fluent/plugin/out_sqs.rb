@@ -16,7 +16,8 @@ module Fluent
 
         config_param :aws_key_id, :string, :default => nil, :secret => true
         config_param :aws_sec_key, :string, :default => nil, :secret => true
-        config_param :queue_name, :string
+        config_param :queue_name, :string, :default => nil
+        config_param :sqs_url, :string, :default => nil
         config_param :create_queue, :bool, :default => true
         config_param :sqs_endpoint, :string, :default => 'sqs.ap-northeast-1.amazonaws.com'
         config_param :delay_seconds, :integer, :default => 0
@@ -34,12 +35,19 @@ module Fluent
                 :access_key_id => @aws_key_id,
                 :secret_access_key => @aws_sec_key)
 
+            @sqs_endpoint = @sqs_url.gsub(/https:\/\/(.*?)\/.*/, '\1') if @sqs_url and not @sqs_endpoint
+
             @sqs = AWS::SQS.new(
                 :sqs_endpoint => @sqs_endpoint)
-            if @create_queue then
+
+            if @create_queue and @queue_name then
                 @queue = @sqs.queues.create(@queue_name)
             else
-                @queue = @sqs.queues.named(@queue_name)
+                if @sqs_url # retrive queue by url
+                  @queue = @sqs.queues[@sqs_url]
+                else
+                  @queue = @sqs.queues.named(@queue_name)
+                end
             end
         end
 

@@ -21,8 +21,10 @@ Read events from from amazon SQS.
 
       type sqs
 
-      # following attibutes are required
+      # url as https://sqs.us-west-2.amazonaws.com/123456789012/myqueue
+      sqs_url {queue_url}
 
+      # following attibute is required if you don't declare a sqs_url
       queue_name {queue_instance_key}
 
       # following attibutes are required if you don't use IAM Role nor export credentials to ENV
