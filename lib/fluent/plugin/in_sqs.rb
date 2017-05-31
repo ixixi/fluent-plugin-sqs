@@ -1,6 +1,6 @@
 module Fluent
 
-  require 'aws-sdk-v1'
+  require 'aws-sdk'
 
   class SQSInput < Input
     Plugin.register_input('sqs', self)
@@ -16,11 +16,13 @@ module Fluent
     config_param :aws_key_id, :string, :default => nil, :secret => true
     config_param :aws_sec_key, :string, :default => nil, :secret => true
     config_param :tag, :string
-    config_param :sqs_endpoint, :string, :default => 'sqs.ap-northeast-1.amazonaws.com'
+    config_param :region, :string, :default => 'ap-northeast-1'
     config_param :sqs_url, :string
     config_param :receive_interval, :time, :default => 0.1
     config_param :max_number_of_messages, :integer, :default => 10
     config_param :wait_time_seconds, :integer, :default => 10
+    config_param :delete_message, :bool, :default => false
+    config_param :stub_responses, :bool, :default => false
 
     def configure(conf)
       super
@@ -30,12 +32,14 @@ module Fluent
     def start
       super
 
-      AWS.config(
+      Aws.config = {
         :access_key_id => @aws_key_id,
-        :secret_access_key => @aws_sec_key
-        )
+        :secret_access_key => @aws_sec_key,
+        :region => @region
+      }
 
-      @queue = AWS::SQS.new(:sqs_endpoint => @sqs_endpoint).queues[@sqs_url]
+      @client = Aws::SQS::Client.new(stub_responses: @stub_responses)
+      @queue = Aws::SQS::Resource.new(:client => @client).queue(@sqs_url)
 
       @finished = false
       @thread = Thread.new(&method(:run_periodic))
@@ -52,17 +56,19 @@ module Fluent
       until @finished
         begin
           sleep @receive_interval
-          @queue.receive_message(
-            :limit => @max_number_of_messages,
+          @queue.receive_messages(
+            :max_number_of_messages => @max_number_of_messages,
             :wait_time_seconds => @wait_time_seconds
-          ) do |message|
+          ).each do |message|
             record = {}
             record['body'] = message.body.to_s
-            record['handle'] = message.handle.to_s
-            record['id'] = message.id.to_s
-            record['md5'] = message.md5.to_s
-            record['url'] = message.queue.url.to_s
-            record['sender_id'] = message.sender_id.to_s
+            record['receipt_handle'] = message.receipt_handle.to_s
+            record['message_id'] = message.message_id.to_s
+            record['md5_of_body'] = message.md5_of_body.to_s
+            record['queue_url'] = message.queue_url.to_s
+            record['sender_id'] = message.attributes['SenderId'].to_s
+
+            message.delete if @delete_message
 
             router.emit(@tag, Time.now.to_i, record)
           end

@@ -19,7 +19,7 @@ module Fluent
         config_param :queue_name, :string, :default => nil
         config_param :sqs_url, :string, :default => nil
         config_param :create_queue, :bool, :default => true
-        config_param :sqs_endpoint, :string, :default => 'sqs.ap-northeast-1.amazonaws.com'
+        config_param :region, :string, :default => 'ap-northeast-1'
         config_param :delay_seconds, :integer, :default => 0
         config_param :include_tag, :bool, :default => true
         config_param :tag_property_name, :string, :default => '__tag'
@@ -31,22 +31,22 @@ module Fluent
         def start
             super
 
-            AWS.config(
+            Aws.config = {
                 :access_key_id => @aws_key_id,
-                :secret_access_key => @aws_sec_key)
+                :secret_access_key => @aws_sec_key,
+                :region => @region
+	          }
 
-            @sqs_endpoint = @sqs_url.gsub(/https:\/\/(.*?)\/.*/, '\1') if @sqs_url and not @sqs_endpoint
-
-            @sqs = AWS::SQS.new(
-                :sqs_endpoint => @sqs_endpoint)
+            @client = Aws::SQS::Client.new
+            @sqs = Aws::SQS::Resource.new(:client => @client)
 
             if @create_queue and @queue_name then
-                @queue = @sqs.queues.create(@queue_name)
+                @queue = @sqs.create_queue(queue_name: @queue_name)
             else
                 if @sqs_url # retrive queue by url
-                  @queue = @sqs.queues[@sqs_url]
+                  @queue = @sqs.queue(@sqs_url)
                 else
-                  @queue = @sqs.queues.named(@queue_name)
+                  @queue = @sqs.get_queue_by_name(queue_name: @queue_name)
                 end
             end
         end
@@ -90,7 +90,7 @@ module Fluent
             until send_batches.length <= 0 do
                 records = send_batches.shift
                 until records.length <= 0 do
-                    @queue.batch_send(records.slice!(0..9))
+                    @queue.send_messages(entries: records.slice!(0..9))
                 end
             end
         end
