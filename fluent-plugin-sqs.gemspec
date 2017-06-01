@@ -19,13 +19,14 @@ Gem::Specification.new do |s|
     'lib/fluent/plugin/in_sqs.rb',
     'lib/fluent/plugin/out_sqs.rb',
     'spec/lib/fluent/plugin/in_sqs_spec.rb',
+    'spec/lib/fluent/plugin/out_sqs_spec.rb',
     'spec/spec_helper.rb'
   ]
   s.homepage = 'https://github.com/ixixi/fluent-plugin-sqs'
   s.require_paths = ['lib']
   s.rubygems_version = '1.8.23'
   s.summary = 'Amazon SQS input/output plugin for Fluent event collector'
-  s.test_files = ['spec/lib/fluent/plugin/in_sqs_spec.rb', 'spec/spec_helper.rb']
+  s.test_files = ['spec/lib/fluent/plugin/in_sqs_spec.rb', 'spec/lib/fluent/plugin/out_sqs_spec.rb', 'spec/spec_helper.rb']
 
   if s.respond_to? :specification_version
     s.specification_version = 3
