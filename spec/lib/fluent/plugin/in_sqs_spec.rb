@@ -19,6 +19,7 @@ describe Fluent::SQSInput do
          receive_interval 1
          max_number_of_messages 10
          wait_time_seconds 10
+         visibility_timeout 1
          delete_message true
          stub_responses true
       )
@@ -33,6 +34,7 @@ describe Fluent::SQSInput do
       it { expect(subject.receive_interval).to eq(1) }
       it { expect(subject.max_number_of_messages).to eq(10) }
       it { expect(subject.wait_time_seconds).to eq(10) }
+      it { expect(subject.visibility_timeout).to eq(1) }
       it { expect(subject.delete_message).to eq(true) }
       it { expect(subject.stub_responses).to eq(true) }
     end
@@ -69,6 +71,7 @@ describe Fluent::SQSInput do
          tag TAG
          max_number_of_messages 10
          wait_time_seconds 10
+         visibility_timeout 1
          delete_message false
       )
       end
@@ -79,7 +82,7 @@ describe Fluent::SQSInput do
 
       it 'parse through messages and emit it' do
         expect(queue).to receive(:receive_messages)
-          .with(max_number_of_messages: 10, wait_time_seconds: 10) { messages }
+          .with(max_number_of_messages: 10, wait_time_seconds: 10, visibility_timeout: 1) { messages }
         expect(subject).to receive(:parse_message).with(message) { message_attributes }
         expect(message).not_to receive(:delete)
         expect(subject.router).to receive(:emit).with('TAG', kind_of(Integer), message_attributes)
@@ -94,6 +97,7 @@ describe Fluent::SQSInput do
          tag TAG
          max_number_of_messages 10
          wait_time_seconds 10
+         visibility_timeout 1
          delete_message true
       )
       end
@@ -104,7 +108,7 @@ describe Fluent::SQSInput do
 
       it 'parse through messages and emit it' do
         expect(queue).to receive(:receive_messages)
-          .with(max_number_of_messages: 10, wait_time_seconds: 10) { messages }
+          .with(max_number_of_messages: 10, wait_time_seconds: 10, visibility_timeout: 1) { messages }
         expect(subject).to receive(:parse_message).with(message) { message_attributes }
         expect(message).to receive(:delete)
         expect(subject.router).to receive(:emit).with('TAG', kind_of(Integer), message_attributes)

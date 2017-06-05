@@ -15,6 +15,7 @@ module Fluent
     config_param :receive_interval, :time, default: 0.1
     config_param :max_number_of_messages, :integer, default: 10
     config_param :wait_time_seconds, :integer, default: 10
+    config_param :visibility_timeout, :integer, default: nil
     config_param :delete_message, :bool, default: false
     config_param :stub_responses, :bool, default: false
 
@@ -60,7 +61,8 @@ module Fluent
     def run
       queue.receive_messages(
         max_number_of_messages: @max_number_of_messages,
-        wait_time_seconds: @wait_time_seconds
+        wait_time_seconds: @wait_time_seconds,
+        visibility_timeout: @visibility_timeout
       ).each do |message|
         record = parse_message(message)
 
