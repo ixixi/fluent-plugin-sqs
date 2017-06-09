@@ -1,113 +1,120 @@
 require 'spec_helper'
+require 'fluent/plugin/in_sqs'
 
-describe do
-  let(:driver) {
-    AWS.stub!
+describe Fluent::SQSInput do
+  let(:driver) do
     Fluent::Test.setup
     Fluent::Test::InputTestDriver.new(Fluent::SQSInput).configure(config)
-  }
-  let(:instance) {driver.instance}
+  end
+  subject { driver.instance }
 
-  describe 'config' do
-    let(:config) {
-      %[
+  describe '#configure' do
+    let(:config) do
+      %(
          aws_key_id AWS_KEY_ID
          aws_sec_key AWS_SEC_KEY
-         tag     TAG
-         sqs_url SQS_URL
+         tag TAG
+         region REGION
+         sqs_url http://SQS_URL
+         receive_interval 1
          max_number_of_messages 10
          wait_time_seconds 10
-      ]
-    }
-    
-    context do
-      subject {instance.aws_key_id}
-      it{should == 'AWS_KEY_ID'}
+         visibility_timeout 1
+         delete_message true
+         stub_responses true
+      )
     end
 
-    context do
-      subject {instance.aws_sec_key}
-      it{should == 'AWS_SEC_KEY'}
+    context 'fluentd input configuration settings' do
+      it { expect(subject.aws_key_id).to eq('AWS_KEY_ID') }
+      it { expect(subject.aws_sec_key).to eq('AWS_SEC_KEY') }
+      it { expect(subject.tag).to eq('TAG') }
+      it { expect(subject.region).to eq('REGION') }
+      it { expect(subject.sqs_url).to eq('http://SQS_URL') }
+      it { expect(subject.receive_interval).to eq(1) }
+      it { expect(subject.max_number_of_messages).to eq(10) }
+      it { expect(subject.wait_time_seconds).to eq(10) }
+      it { expect(subject.visibility_timeout).to eq(1) }
+      it { expect(subject.delete_message).to eq(true) }
+      it { expect(subject.stub_responses).to eq(true) }
     end
 
-    context do
-      subject {instance.tag}
-      it{should == 'TAG'}
-    end
+    context 'AWS configuration settings' do
+      subject { Aws.config }
 
-    context do
-      subject {instance.sqs_url}
-      it{should == 'SQS_URL'}
-    end
+      before { driver.instance }
 
-    context do
-      subject {instance.receive_interval}
-      it{should == 0.1}
-    end
-
-    context do
-      subject {instance.max_number_of_messages}
-      it{should == 10}
-    end
-
-    context do
-      subject {instance.wait_time_seconds}
-      it{should == 10}
+      it { expect(subject[:access_key_id]).to eq('AWS_KEY_ID') }
+      it { expect(subject[:secret_access_key]).to eq('AWS_SEC_KEY') }
+      it { expect(subject[:region]).to eq('REGION') }
     end
   end
-  
-  describe 'emit' do
-    let(:message) do
-      { 'body' => 'body',
-        'handle' => 'handle',
-        'id' => 'id',
-        'md5' => 'md5',
-        'url' => 'url',
-        'sender_id' => 'sender_id'
+
+  describe '#run' do
+    let(:message_attributes) do
+      {
+        body: 'body',
+        receipt_handle: 'receipt_handle',
+        message_id: 'message_id',
+        md5_of_body: 'md5_of_body',
+        queue_url: 'queue_url',
+        attributes: { 'SenderId' => 'sender_id' }
       }
     end
-    let(:emmits) {
-      allow(Time).to receive(:now).and_return(0)
+    let(:queue) { double(:queue, receive_messages: true) }
+    let(:message) { double(:message, **message_attributes.merge(delete: nil)) }
+    let(:messages) { [message] }
 
-      class AWS::SQS::Queue
-        def receive_message(opts)
-          yield OpenStruct.new(
-            { 'body' => 'body',
-              'handle' => 'handle',
-              'id' => 'id',
-              'md5' => 'md5',
-              'queue' => OpenStruct.new(:url => 'url'),
-              'sender_id' => 'sender_id',
-              'sent_at' => 0
-            })
-        end
-      end
-      expect_any_instance_of(AWS::SQS::Queue).to receive(:receive_message).with({:limit => 10, :wait_time_seconds=>10}).at_least(:once).and_call_original
-
-      d = driver
-      d.run do
-        sleep 2
+    context 'with no delete messages param' do
+      let(:config) do
+        %(
+         tag TAG
+         max_number_of_messages 10
+         wait_time_seconds 10
+         visibility_timeout 1
+         delete_message false
+      )
       end
 
-      d.emits
-    }
+      before do
+        allow(subject).to receive(:queue) { queue }
+      end
 
-    context do
-      let(:config) {
-        %[
-           aws_key_id AWS_KEY_ID
-           aws_sec_key AWS_SEC_KEY
-           tag     TAG
-           sqs_url SQS_URL
-           max_number_of_messages 10
-           wait_time_seconds 10
-        ]
-      }
+      it 'parse through messages and emit it' do
+        expect(queue).to receive(:receive_messages)
+          .with(max_number_of_messages: 10, wait_time_seconds: 10, visibility_timeout: 1) { messages }
+        expect(subject).to receive(:parse_message).with(message) { message_attributes }
+        expect(message).not_to receive(:delete)
+        expect(subject.router).to receive(:emit).with('TAG', kind_of(Integer), message_attributes)
 
-      subject {emmits.first}
-      it{should ==  ['TAG', 0, message]}
+        subject.run
+      end
     end
 
+    context 'with no delete messages param' do
+      let(:config) do
+        %(
+         tag TAG
+         max_number_of_messages 10
+         wait_time_seconds 10
+         visibility_timeout 1
+         delete_message true
+      )
+      end
+
+      before do
+        allow(subject).to receive(:queue) { queue }
+      end
+
+      it 'parse through messages and emit it' do
+        expect(queue).to receive(:receive_messages)
+          .with(max_number_of_messages: 10, wait_time_seconds: 10, visibility_timeout: 1) { messages }
+        expect(subject).to receive(:parse_message).with(message) { message_attributes }
+        expect(message).to receive(:delete)
+        expect(subject.router).to receive(:emit).with('TAG', kind_of(Integer), message_attributes)
+
+        subject.run
+      end
+    end
   end
-
 end
