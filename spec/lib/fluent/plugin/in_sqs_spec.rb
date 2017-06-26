@@ -1,10 +1,10 @@
 require 'spec_helper'
 require 'fluent/plugin/in_sqs'
 
-describe Fluent::SQSInput do
+describe Fluent::Plugin::SQSInput do
   let(:driver) do
     Fluent::Test.setup
-    Fluent::Test::InputTestDriver.new(Fluent::SQSInput).configure(config)
+    Fluent::Test::Driver::Input.new(Fluent::Plugin::SQSInput).configure(config)
   end
   subject { driver.instance }
 

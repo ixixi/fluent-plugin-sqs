@@ -1,9 +1,11 @@
-require 'fluent/input'
+require 'fluent/plugin/input'
 require 'aws-sdk'
 
-module Fluent
+module Fluent::Plugin
   class SQSInput < Input
-    Plugin.register_input('sqs', self)
+    Fluent::Plugin.register_input('sqs', self)
+
+    helpers :timer
 
     define_method('router') { Fluent::Engine } unless method_defined?(:router)
 
@@ -32,8 +34,7 @@ module Fluent
     def start
       super
 
-      @finished = false
-      @thread = Thread.new(&method(:run_periodic))
+      timer_execute(:in_sqs_run_periodic_timer, @receive_interval, &method(:run))
     end
 
     def client
@@ -46,16 +47,6 @@ module Fluent
 
     def shutdown
       super
-
-      @finished = true
-      @thread.join
-    end
-
-    def run_periodic
-      until @finished
-        sleep @receive_interval
-        run
-      end
     end
 
     def run
