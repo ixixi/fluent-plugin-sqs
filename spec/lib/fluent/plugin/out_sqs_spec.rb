@@ -121,6 +121,7 @@ describe Fluent::SQSOutput do
     it 'send_messages to queue' do
       allow(Yajl).to receive(:dump).with(record) { body }
 
+      expect(driver.instance).to receive(:queue).twice.and_return("QUEUE_NAME")
       expect(subject.queue).to receive(:send_messages).with(entries: [{ id: kind_of(String), message_body: body, delay_seconds: 0 }])
 
       driver.emit(record).run
