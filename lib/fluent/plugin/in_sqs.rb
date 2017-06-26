@@ -7,8 +7,6 @@ module Fluent::Plugin
 
     helpers :timer
 
-    define_method('router') { Fluent::Engine } unless method_defined?(:router)
-
     config_param :aws_key_id, :string, default: nil, secret: true
     config_param :aws_sec_key, :string, default: nil, secret: true
     config_param :tag, :string
