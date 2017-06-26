@@ -16,6 +16,8 @@ RSpec.configure do |config|
 
   require 'fluent/load'
   require 'fluent/test'
+  require 'fluent/test/helpers'
+  require 'fluent/test/driver/output'
 
   require 'ostruct'
   require 'pry'
