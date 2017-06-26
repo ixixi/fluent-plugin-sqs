@@ -60,8 +60,8 @@ module Fluent::Plugin
         router.emit(@tag, Fluent::Engine.now, record)
       end
     rescue
-      $log.error 'failed to emit or receive', error: $ERROR_INFO.to_s, error_class: $ERROR_INFO.class.to_s
-      $log.warn_backtrace $ERROR_INFO.backtrace
+      log.error 'failed to emit or receive', error: $ERROR_INFO.to_s, error_class: $ERROR_INFO.class.to_s
+      log.warn_backtrace $ERROR_INFO.backtrace
     end
 
     private
