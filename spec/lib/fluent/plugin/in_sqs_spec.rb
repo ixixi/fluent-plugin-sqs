@@ -85,7 +85,7 @@ describe Fluent::Plugin::SQSInput do
           .with(max_number_of_messages: 10, wait_time_seconds: 10, visibility_timeout: 1) { messages }
         expect(subject).to receive(:parse_message).with(message) { message_attributes }
         expect(message).not_to receive(:delete)
-        expect(subject.router).to receive(:emit).with('TAG', kind_of(Integer), message_attributes)
+        expect(subject.router).to receive(:emit).with('TAG', kind_of(Fluent::EventTime), message_attributes)
 
         subject.run
       end
@@ -111,7 +111,7 @@ describe Fluent::Plugin::SQSInput do
           .with(max_number_of_messages: 10, wait_time_seconds: 10, visibility_timeout: 1) { messages }
         expect(subject).to receive(:parse_message).with(message) { message_attributes }
         expect(message).to receive(:delete)
-        expect(subject.router).to receive(:emit).with('TAG', kind_of(Integer), message_attributes)
+        expect(subject.router).to receive(:emit).with('TAG', kind_of(Fluent::EventTime), message_attributes)
 
         subject.run
       end

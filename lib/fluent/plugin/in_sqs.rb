@@ -59,7 +59,7 @@ module Fluent::Plugin
 
         message.delete if @delete_message
 
-        router.emit(@tag, Time.now.to_i, record)
+        router.emit(@tag, Fluent::Engine.now, record)
       end
     rescue
       $log.error 'failed to emit or receive', error: $ERROR_INFO.to_s, error_class: $ERROR_INFO.class.to_s
