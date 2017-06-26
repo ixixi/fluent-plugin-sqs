@@ -41,7 +41,7 @@ Gem::Specification.new do |s|
       s.add_dependency('yajl-ruby', ['~> 1.0'])
     end
   else
-    s.add_dependency('fluentd', ['>= 0.12.0', '< 2'])
+    s.add_dependency('fluentd', ['>= 0.14.15', '< 2'])
     s.add_dependency('aws-sdk', ['~> 2'])
     s.add_dependency('yajl-ruby', ['~> 1.0'])
   end
