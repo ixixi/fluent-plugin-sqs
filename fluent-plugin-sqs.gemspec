@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
   s.authors = ['Yuri Odagiri']
-  s.date = '2016-06-09'
+  s.date = '2017-06-27'
   s.email = 'ixixizko@gmail.com'
   s.license = 'Apache-2.0'
   s.extra_rdoc_files = [
