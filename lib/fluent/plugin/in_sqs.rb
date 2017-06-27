@@ -1,11 +1,11 @@
-require 'fluent/input'
+require 'fluent/plugin/input'
 require 'aws-sdk'
 
-module Fluent
+module Fluent::Plugin
   class SQSInput < Input
-    Plugin.register_input('sqs', self)
+    Fluent::Plugin.register_input('sqs', self)
 
-    define_method('router') { Fluent::Engine } unless method_defined?(:router)
+    helpers :timer
 
     config_param :aws_key_id, :string, default: nil, secret: true
     config_param :aws_sec_key, :string, default: nil, secret: true
@@ -32,8 +32,7 @@ module Fluent
     def start
       super
 
-      @finished = false
-      @thread = Thread.new(&method(:run_periodic))
+      timer_execute(:in_sqs_run_periodic_timer, @receive_interval, &method(:run))
     end
 
     def client
@@ -46,16 +45,6 @@ module Fluent
 
     def shutdown
       super
-
-      @finished = true
-      @thread.join
-    end
-
-    def run_periodic
-      until @finished
-        sleep @receive_interval
-        run
-      end
     end
 
     def run
@@ -68,11 +57,11 @@ module Fluent
 
         message.delete if @delete_message
 
-        router.emit(@tag, Time.now.to_i, record)
+        router.emit(@tag, Fluent::Engine.now, record)
       end
     rescue
-      $log.error 'failed to emit or receive', error: $ERROR_INFO.to_s, error_class: $ERROR_INFO.class.to_s
-      $log.warn_backtrace $ERROR_INFO.backtrace
+      log.error 'failed to emit or receive', error: $ERROR_INFO.to_s, error_class: $ERROR_INFO.class.to_s
+      log.warn_backtrace $ERROR_INFO.backtrace
     end
 
     private

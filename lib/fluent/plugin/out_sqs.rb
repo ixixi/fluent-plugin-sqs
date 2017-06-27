@@ -1,17 +1,18 @@
-require 'fluent/output'
+require 'fluent/plugin/output'
 require 'aws-sdk'
 
-module Fluent
+module Fluent::Plugin
   SQS_BATCH_SEND_MAX_MSGS = 10
   SQS_BATCH_SEND_MAX_SIZE = 262_144
 
-  class SQSOutput < BufferedOutput
+  class SQSOutput < Output
     Fluent::Plugin.register_output('sqs', self)
 
-    include SetTagKeyMixin
-    config_set_default :include_tag_key, false
+    helpers :compat_parameters, :inject
 
-    include SetTimeKeyMixin
+    DEFAULT_BUFFER_TYPE = "memory"
+
+    config_set_default :include_tag_key, false
     config_set_default :include_time_key, true
 
     config_param :aws_key_id, :string, default: nil, secret: true
@@ -24,7 +25,12 @@ module Fluent
     config_param :include_tag, :bool, default: true
     config_param :tag_property_name, :string, default: '__tag'
 
+    config_section :buffer do
+      config_set_default :@type, DEFAULT_BUFFER_TYPE
+    end
+
     def configure(conf)
+      compat_parameters_convert(conf, :buffer, :inject)
       super
 
       Aws.config = {
@@ -58,10 +64,19 @@ module Fluent
       @queue
     end
 
-    def format(tag, _time, record)
+    def format(tag, time, record)
       record[@tag_property_name] = tag if @include_tag
+      record = inject_values_to_record(tag, time, record)
 
       record.to_msgpack
+    end
+
+    def formatted_to_msgpack_binary
+      true
+    end
+
+    def multi_workers_ready?
+      true
     end
 
     def write(chunk)
