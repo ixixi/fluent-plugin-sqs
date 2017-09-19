@@ -113,8 +113,8 @@ module Fluent::Plugin
     end
 
     def generate_id
-      unique_val = ((('a'..'z').to_a + (0..9).to_a)*3).shuffle[0,(rand(10).to_i)].join
-      @tag_property_name + Time.now.to_i.to_s + unique_val
+      charset = %w{ 1 2 3 4 6 7 9 A C D E F G H J K M N P Q R T V W X Y Z} 
+      (0...80).map{ charset.to_a[rand(charset.size)] }.join
     end
   end
 end
