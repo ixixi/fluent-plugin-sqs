@@ -28,23 +28,10 @@ Gem::Specification.new do |s|
   s.summary = 'Amazon SQS input/output plugin for Fluent event collector'
   s.test_files = ['spec/lib/fluent/plugin/in_sqs_spec.rb', 'spec/lib/fluent/plugin/out_sqs_spec.rb', 'spec/spec_helper.rb']
 
-  if s.respond_to? :specification_version
-    s.specification_version = 3
+  s.add_dependency('fluentd', ['>= 0.14.15', '< 2'])
+  s.add_dependency('aws-sdk-sqs', ['~> 1'])
+  s.add_dependency('yajl-ruby', ['~> 1.0'])
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0')
-      s.add_runtime_dependency('fluentd', ['>= 0.12.0', '< 2'])
-      s.add_runtime_dependency('aws-sdk-sqs', ['~> 1'])
-      s.add_runtime_dependency('yajl-ruby', ['~> 1.0'])
-    else
-      s.add_dependency('fluentd', ['>= 0.12.0', '< 2'])
-      s.add_dependency('aws-sdk-sqs', ['~> 1'])
-      s.add_dependency('yajl-ruby', ['~> 1.0'])
-    end
-  else
-    s.add_dependency('fluentd', ['>= 0.14.15', '< 2'])
-    s.add_dependency('aws-sdk-sqs', ['~> 1'])
-    s.add_dependency('yajl-ruby', ['~> 1.0'])
-  end
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
