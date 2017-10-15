@@ -24,6 +24,7 @@ module Fluent::Plugin
     config_param :delay_seconds, :integer, default: 0
     config_param :include_tag, :bool, default: true
     config_param :tag_property_name, :string, default: '__tag'
+    config_param :message_group_id, :string, default: nil
 
     config_section :buffer do
       config_set_default :@type, DEFAULT_BUFFER_TYPE
@@ -32,6 +33,10 @@ module Fluent::Plugin
     def configure(conf)
       compat_parameters_convert(conf, :buffer, :inject)
       super
+
+      if (!@queue_name.nil? && @queue_name.end_with?('.fifo')) || (!@sqs_url.nil? && @sqs_url.end_with?('.fifo'))
+        raise Fluent::ConfigError, 'message_group_id parameter is required for FIFO queue' if @message_group_id.nil?
+      end
 
       Aws.config = {
         access_key_id: @aws_key_id,
@@ -100,7 +105,9 @@ module Fluent::Plugin
                    "#{SQS_BATCH_SEND_MAX_SIZE} bytes.  " \
                    "(Truncated message: #{body[0..200]})"
         else
-          batch_records << { id: generate_id, message_body: body, delay_seconds: @delay_seconds }
+          batch_record = { id: generate_id, message_body: body, delay_seconds: @delay_seconds }
+          batch_record[:message_group_id] = @message_group_id unless @message_group_id.nil?
+          batch_records << batch_record
         end
       end
 
