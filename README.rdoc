@@ -33,9 +33,13 @@ Read events from from amazon SQS.
       aws_sec_key {your_aws_secret_key}
 
       # following attibutes are optional
-    　
+
       create_queue {boolean}
       region {your_region}
+
+      # following attributes are required if you use FIFO queue
+
+      message_group_id {string}
 
       ### region list ###
       # Asia Pacific (Tokyo) [Default] : ap-northeast-1
