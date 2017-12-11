@@ -100,7 +100,8 @@ module Fluent::Plugin
                    "#{SQS_BATCH_SEND_MAX_SIZE} bytes.  " \
                    "(Truncated message: #{body[0..200]})"
         else
-          batch_records << { id: generate_id, message_body: body, delay_seconds: @delay_seconds }
+          id = "#{@tag_property_name}#{SecureRandom.hex(16)}"
+          batch_records << { id: id, message_body: body, delay_seconds: @delay_seconds }
         end
       end
 
@@ -110,11 +111,6 @@ module Fluent::Plugin
           queue.send_messages(entries: records.slice!(0..9))
         end
       end
-    end
-
-    def generate_id
-      unique_val = ((('a'..'z').to_a + (0..9).to_a)*3).shuffle[0,(rand(10).to_i)].join
-      @tag_property_name + Time.now.to_i.to_s + unique_val
     end
   end
 end
