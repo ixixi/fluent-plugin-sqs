@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = 'fluent-plugin-sqs'
-  s.version = '2.1.0'
+  s.version = '3.0.0'
 
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
   s.authors = ['Yuri Odagiri']
-  s.date = '2017-06-27'
+  s.date = '2018-04-24'
   s.email = 'ixixizko@gmail.com'
   s.license = 'Apache-2.0'
   s.extra_rdoc_files = [
