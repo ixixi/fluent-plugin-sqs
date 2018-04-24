@@ -5,10 +5,7 @@ describe Fluent::Plugin::SQSOutput do
   let(:driver) { Fluent::Test::Driver::Output.new(Fluent::Plugin::SQSOutput) }
   subject { driver.instance }
 
-  before do
-    Fluent::Test.setup
-    driver.configure(config)
-  end
+  before { Fluent::Test.setup }
 
   describe '#configure' do
     let(:config) do
@@ -22,10 +19,13 @@ describe Fluent::Plugin::SQSOutput do
          delay_seconds 1
          include_tag false
          tag_property_name TAG_PROPERTY_NAME
+         message_group_id MESSAGE_GROUP_ID
       )
     end
 
     context 'fluentd output configuration settings' do
+      before { driver.configure(config) }
+
       it { expect(subject.aws_key_id).to eq('AWS_KEY_ID') }
       it { expect(subject.aws_sec_key).to eq('AWS_SEC_KEY') }
       it { expect(subject.queue_name).to eq('QUEUE_NAME') }
@@ -35,20 +35,55 @@ describe Fluent::Plugin::SQSOutput do
       it { expect(subject.delay_seconds).to eq(1) }
       it { expect(subject.include_tag).to eq(false) }
       it { expect(subject.tag_property_name).to eq('TAG_PROPERTY_NAME') }
+      it { expect(subject.message_group_id).to eq('MESSAGE_GROUP_ID') }
     end
 
     context 'AWS configuration settings' do
       subject { Aws.config }
 
-      before { driver.instance }
+      before do
+        driver.instance
+        driver.configure(config)
+      end
 
       it { expect(subject[:access_key_id]).to eq('AWS_KEY_ID') }
       it { expect(subject[:secret_access_key]).to eq('AWS_SEC_KEY') }
       it { expect(subject[:region]).to eq('REGION') }
     end
+
+    context 'using Standard queue' do
+      let(:config) { %( queue_name QUEUE_NAME ) }
+
+      it 'does not raises error' do
+        expect { driver.configure(config) }.not_to raise_error(Fluent::ConfigError)
+      end
+    end
+
+    context 'using FIFO queue and sets message_group_id' do
+      let(:config) do
+        %(
+          queue_name QUEUE_NAME.fifo
+          message_group_id MESSAGE_GROUP_ID
+        )
+      end
+
+      it 'does not raise error' do
+        expect { driver.configure(config) }.not_to raise_error(Fluent::ConfigError)
+      end
+    end
+
+    context 'using FIFO queue and does not set message_group_id' do
+      let(:config) { %( queue_name QUEUE_NAME.fifo ) }
+
+      it 'raises error' do
+        expect { driver.configure(config) }.to raise_error(Fluent::ConfigError)
+      end
+    end
   end
 
   describe '#queue' do
+    before { driver.configure(config) }
+
     context 'when create_queue and queue_name are set' do
       let(:config) do
         %(
@@ -109,6 +144,8 @@ describe Fluent::Plugin::SQSOutput do
   end
 
   describe '#write' do
+    before { driver.configure(config) }
+
     let(:config) do
       %(
        queue_name QUEUE_NAME
