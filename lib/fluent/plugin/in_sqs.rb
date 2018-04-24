@@ -21,12 +21,6 @@ module Fluent::Plugin
 
     def configure(conf)
       super
-
-      Aws.config = {
-        access_key_id: @aws_key_id,
-        secret_access_key: @aws_sec_key,
-        region: @region
-      }
     end
 
     def start
@@ -36,7 +30,12 @@ module Fluent::Plugin
     end
 
     def client
-      @client ||= Aws::SQS::Client.new(stub_responses: @stub_responses)
+      @client ||= Aws::SQS::Client.new(
+        access_key_id: @aws_key_id,
+        secret_access_key: @aws_sec_key,
+        region: @region,
+        stub_responses: @stub_responses,
+      )
     end
 
     def queue
