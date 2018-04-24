@@ -1,5 +1,5 @@
 require 'fluent/plugin/output'
-require 'aws-sdk'
+require 'aws-sdk-sqs'
 
 module Fluent::Plugin
   SQS_BATCH_SEND_MAX_MSGS = 10
