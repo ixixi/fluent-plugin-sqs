@@ -33,16 +33,16 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0')
       s.add_runtime_dependency('fluentd', ['>= 0.12.0', '< 2'])
-      s.add_runtime_dependency('aws-sdk', ['~> 2'])
+      s.add_runtime_dependency('aws-sdk-sqs', ['~> 1'])
       s.add_runtime_dependency('yajl-ruby', ['~> 1.0'])
     else
       s.add_dependency('fluentd', ['>= 0.12.0', '< 2'])
-      s.add_dependency('aws-sdk', ['~> 2'])
+      s.add_dependency('aws-sdk-sqs', ['~> 1'])
       s.add_dependency('yajl-ruby', ['~> 1.0'])
     end
   else
     s.add_dependency('fluentd', ['>= 0.14.15', '< 2'])
-    s.add_dependency('aws-sdk', ['~> 2'])
+    s.add_dependency('aws-sdk-sqs', ['~> 1'])
     s.add_dependency('yajl-ruby', ['~> 1.0'])
   end
   s.add_development_dependency 'bundler'

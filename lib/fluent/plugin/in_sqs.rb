@@ -1,5 +1,5 @@
 require 'fluent/plugin/input'
-require 'aws-sdk'
+require 'aws-sdk-sqs'
 
 module Fluent::Plugin
   class SQSInput < Input

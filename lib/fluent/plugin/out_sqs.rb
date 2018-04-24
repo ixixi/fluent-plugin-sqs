@@ -1,5 +1,5 @@
 require 'fluent/plugin/output'
-require 'aws-sdk'
+require 'aws-sdk-sqs'
 
 module Fluent::Plugin
   SQS_BATCH_SEND_MAX_MSGS = 10
@@ -105,7 +105,8 @@ module Fluent::Plugin
                    "#{SQS_BATCH_SEND_MAX_SIZE} bytes.  " \
                    "(Truncated message: #{body[0..200]})"
         else
-          batch_record = { id: generate_id, message_body: body, delay_seconds: @delay_seconds }
+          id = "#{@tag_property_name}#{SecureRandom.hex(16)}"
+          batch_record = { id: id, message_body: body, delay_seconds: @delay_seconds }
           batch_record[:message_group_id] = @message_group_id unless @message_group_id.nil?
           batch_records << batch_record
         end
@@ -117,11 +118,6 @@ module Fluent::Plugin
           queue.send_messages(entries: records.slice!(0..9))
         end
       end
-    end
-
-    def generate_id
-      unique_val = ((('a'..'z').to_a + (0..9).to_a)*3).shuffle[0,(rand(10).to_i)].join
-      @tag_property_name + Time.now.to_i.to_s + unique_val
     end
   end
 end
