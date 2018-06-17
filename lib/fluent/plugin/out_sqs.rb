@@ -55,6 +55,9 @@ module Fluent::Plugin
       rescue Aws::SQS::Errors::NonExistentQueue => e
         if @create_queue
           sqs_url = client.create_queue(queue_name: @queue_name).queue_url
+        else
+          raise
+        end
       end
 
       @queue = Aws::SQS::Queue.new(
