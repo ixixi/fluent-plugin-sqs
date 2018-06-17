@@ -7,13 +7,13 @@
 
 === SQSOutput
 
-Store fluent-event as queue message to amazon SQS.
+Store fluent-event as queue message to Amazon SQS.
 
 === SQSInput
 
-Read events from from amazon SQS.
+Read events from Amazon SQS.
 
-== Configuratin
+== Configuration
 
 === SQSOutput
 
@@ -24,15 +24,15 @@ Read events from from amazon SQS.
       # url as https://sqs.us-west-2.amazonaws.com/123456789012/myqueue
       sqs_url {queue_url}
 
-      # following attibute is required if you don't declare a sqs_url
+      # following attribute is required if you don't declare a sqs_url
       queue_name {queue_instance_key}
 
-      # following attibutes are required if you don't use IAM Role nor export credentials to ENV
+      # following attributes are required if you don't use IAM Role nor export credentials to ENV
 
       aws_key_id {your_aws_key_id}
       aws_sec_key {your_aws_secret_key}
 
-      # following attibutes are optional
+      # following attributes are optional
 
       create_queue {boolean}
       region {your_region}
@@ -64,16 +64,16 @@ Read events from from amazon SQS.
 
       type sqs
 
-      # following attibutes are required
+      # following attribute is required
 
       sqs_url {queue_url}
 
-      # following attibutes are required if you don't use IAM Role nor export credentials to ENV
+      # following attributes are required if you don't use IAM Role nor export credentials to ENV
 
       aws_key_id {your_aws_key_id}
       aws_sec_key {your_aws_secret_key}
 
-      # following attibutes are optional
+      # following attributes are optional
     　
       region {your_region}
 
