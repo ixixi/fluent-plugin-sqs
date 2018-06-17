@@ -18,7 +18,6 @@ module Fluent::Plugin
     config_param :aws_key_id, :string, default: nil, secret: true
     config_param :aws_sec_key, :string, default: nil, secret: true
     config_param :queue_name, :string, default: nil
-    config_param :sqs_url, :string, default: nil
     config_param :create_queue, :bool, default: true
     config_param :region, :string, default: 'ap-northeast-1'
     config_param :delay_seconds, :integer, default: 0
@@ -34,38 +33,34 @@ module Fluent::Plugin
       compat_parameters_convert(conf, :buffer, :inject)
       super
 
-      if (!@queue_name.nil? && @queue_name.end_with?('.fifo')) || (!@sqs_url.nil? && @sqs_url.end_with?('.fifo'))
+      if (!@queue_name.nil? && @queue_name.end_with?('.fifo'))
         raise Fluent::ConfigError, 'message_group_id parameter is required for FIFO queue' if @message_group_id.nil?
       end
-
-      Aws.config = {
-        access_key_id: @aws_key_id,
-        secret_access_key: @aws_sec_key,
-        region: @region
-      }
     end
 
     def client
-      @client ||= Aws::SQS::Client.new
-    end
-
-    def resource
-      @resource ||= Aws::SQS::Resource.new(client: client)
+      @client ||= Aws::SQS::Client.new(
+        access_key_id: @aws_key_id,
+        secret_access_key: @aws_sec_key,
+        region: @region,
+        stub_responses: @stub_responses
+      )
     end
 
     def queue
       return @queue if @queue
 
-      @queue = if @create_queue && @queue_name
-                 resource.create_queue(queue_name: @queue_name)
-               else
-                 @queue = if @sqs_url
-                            resource.queue(@sqs_url)
-                          else
-                            resource.get_queue_by_name(queue_name: @queue_name)
-                          end
-               end
+      begin
+        sqs_url = client.get_queue_url(queue_name: @queue_name, queue_owner_aws_account_id: @queue_owner_aws_account_id).queue_url
+      rescue Aws::SQS::Errors::NonExistentQueue => e
+        if @create_queue
+          sqs_url = client.create_queue(queue_name: @queue_name).queue_url
+      end
 
+      @queue = Aws::SQS::Queue.new(
+        url: sqs_url,
+        client: client
+      )
       @queue
     end
 
