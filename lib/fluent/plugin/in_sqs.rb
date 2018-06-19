@@ -11,7 +11,8 @@ module Fluent::Plugin
     config_param :aws_sec_key, :string, default: nil, secret: true
     config_param :tag, :string
     config_param :region, :string, default: 'ap-northeast-1'
-    config_param :sqs_url, :string, default: nil
+    config_param :queue_name, :string, default: nil
+    config_param :queue_owner_aws_account_id, :string, default: nil
     config_param :receive_interval, :time, default: 0.1
     config_param :max_number_of_messages, :integer, default: 10
     config_param :wait_time_seconds, :integer, default: 10
@@ -21,12 +22,6 @@ module Fluent::Plugin
 
     def configure(conf)
       super
-
-      Aws.config = {
-        access_key_id: @aws_key_id,
-        secret_access_key: @aws_sec_key,
-        region: @region
-      }
     end
 
     def start
@@ -36,11 +31,19 @@ module Fluent::Plugin
     end
 
     def client
-      @client ||= Aws::SQS::Client.new(stub_responses: @stub_responses)
+      @client ||= Aws::SQS::Client.new(
+        access_key_id: @aws_key_id,
+        secret_access_key: @aws_sec_key,
+        region: @region,
+        stub_responses: @stub_responses
+      )
     end
 
     def queue
-      @queue ||= Aws::SQS::Resource.new(client: client).queue(@sqs_url)
+      @queue ||= Aws::SQS::Queue.new(
+        url: client.get_queue_url(queue_name: @queue_name, queue_owner_aws_account_id: @queue_owner_aws_account_id).queue_url,
+        client: client
+      )
     end
 
     def shutdown

@@ -21,25 +21,23 @@ Read events from Amazon SQS.
 
       type sqs
 
-      # url as https://sqs.us-west-2.amazonaws.com/123456789012/myqueue
-      sqs_url {queue_url}
-
-      # following attribute is required if you don't declare a sqs_url
-      queue_name {queue_instance_key}
+      # following attribute is required
+      queue_name {queue_name}
 
       # following attributes are required if you don't use IAM Role nor export credentials to ENV
 
       aws_key_id {your_aws_key_id}
       aws_sec_key {your_aws_secret_key}
 
-      # following attributes are optional
-
-      create_queue {boolean}
-      region {your_region}
-
       # following attributes are required if you use FIFO queue
 
       message_group_id {string}
+
+      # following attributes are optional
+
+      create_queue {boolean}
+
+      region {your_region}
 
       ### region list ###
       # Asia Pacific (Tokyo) [Default] : ap-northeast-1
@@ -53,6 +51,7 @@ Read events from Amazon SQS.
       delay_seconds {delivery_delay_seconds}
 
       include_tag {boolean}
+
       tag_property_name {tag's property name in json}
 
 
@@ -66,7 +65,7 @@ Read events from Amazon SQS.
 
       # following attribute is required
 
-      sqs_url {queue_url}
+      queue_name {queue_name}
 
       # following attributes are required if you don't use IAM Role nor export credentials to ENV
 
