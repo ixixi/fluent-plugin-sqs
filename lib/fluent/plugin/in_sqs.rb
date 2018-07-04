@@ -1,5 +1,6 @@
 require 'fluent/plugin/input'
 require 'aws-sdk-sqs'
+require 'json'
 
 module Fluent::Plugin
   class SQSInput < Input
@@ -18,6 +19,7 @@ module Fluent::Plugin
     config_param :visibility_timeout, :integer, default: nil
     config_param :delete_message, :bool, default: false
     config_param :stub_responses, :bool, default: false
+    config_param :raw_message, :bool, default: false
 
     def configure(conf)
       super
@@ -53,7 +55,7 @@ module Fluent::Plugin
         wait_time_seconds: @wait_time_seconds,
         visibility_timeout: @visibility_timeout
       ).each do |message|
-        record = parse_message(message)
+        record = @raw_message ? parse_raw_message(message) : parse_message(message)
 
         message.delete if @delete_message
 
@@ -65,6 +67,10 @@ module Fluent::Plugin
     end
 
     private
+
+    def parse_raw_message(message)
+      JSON.parse(message.body) rescue message.body.to_s 
+    end
 
     def parse_message(message)
       {
