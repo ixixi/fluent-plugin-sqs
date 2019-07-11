@@ -1,5 +1,6 @@
 require 'fluent/plugin/input'
 require 'aws-sdk-sqs'
+require 'json'
 
 module Fluent::Plugin
   class SQSInput < Input
@@ -10,6 +11,7 @@ module Fluent::Plugin
     config_param :aws_key_id, :string, default: nil, secret: true
     config_param :aws_sec_key, :string, default: nil, secret: true
     config_param :tag, :string
+    config_param :tag_key, :string, default: nil
     config_param :region, :string, default: 'ap-northeast-1'
     config_param :sqs_url, :string, default: nil
     config_param :receive_interval, :time, default: 0.1
@@ -18,6 +20,7 @@ module Fluent::Plugin
     config_param :visibility_timeout, :integer, default: nil
     config_param :delete_message, :bool, default: false
     config_param :stub_responses, :bool, default: false
+    config_param :raw_message, :bool, default: false
 
     def configure(conf)
       super
@@ -53,11 +56,15 @@ module Fluent::Plugin
         wait_time_seconds: @wait_time_seconds,
         visibility_timeout: @visibility_timeout
       ).each do |message|
-        record = parse_message(message)
+        record = @raw_message ? parse_raw_message(message) : parse_message(message)
 
         message.delete if @delete_message
 
-        router.emit(@tag, Fluent::Engine.now, record)
+        tag = @tag_key ? record[@tag_key] : @tag
+        record.delete @tag_key if @tag_key
+
+        log.debug "emiting record under tag #{tag}: #{record.to_s}"
+        router.emit(tag, Fluent::Engine.now, record)
       end
     rescue
       log.error 'failed to emit or receive', error: $ERROR_INFO.to_s, error_class: $ERROR_INFO.class.to_s
@@ -65,6 +72,14 @@ module Fluent::Plugin
     end
 
     private
+
+    def get_tag_name(record)
+      record[@tag_key] rescue @tag
+    end
+
+    def parse_raw_message(message)
+      JSON.parse(message.body) rescue message.body.to_s
+    end
 
     def parse_message(message)
       {
