@@ -78,7 +78,7 @@ module Fluent::Plugin
       # }
       #
       # message
-      message.to_json
+      message
     end
   end
 end
