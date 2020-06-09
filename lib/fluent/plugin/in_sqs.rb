@@ -80,7 +80,8 @@ module Fluent::Plugin
       # message
       # message.to_json
       # message.body
-      message.body.attributes
+      # message.body.attributes
+      JSON.parse(message.body)
     end
   end
 end
