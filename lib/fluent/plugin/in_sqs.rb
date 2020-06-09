@@ -80,7 +80,7 @@ module Fluent::Plugin
       # message
       # message.to_json
       # message.body
-      message.body.to_json
+      message.body.attributes
     end
   end
 end
