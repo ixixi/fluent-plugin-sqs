@@ -1,5 +1,6 @@
 require 'fluent/plugin/input'
 require 'aws-sdk-sqs'
+require 'json'
 
 module Fluent::Plugin
   class SQSInput < Input
@@ -67,14 +68,17 @@ module Fluent::Plugin
     private
 
     def parse_message(message)
-      {
-        'body' => message.body.to_s,
-        'receipt_handle' => message.receipt_handle.to_s,
-        'message_id' => message.message_id.to_s,
-        'md5_of_body' => message.md5_of_body.to_s,
-        'queue_url' => message.queue_url.to_s,
-        'sender_id' => message.attributes['SenderId'].to_s
-      }
+      # {
+      #   'body' => message.body.to_s,
+      #   'receipt_handle' => message.receipt_handle.to_s,
+      #   'message_id' => message.message_id.to_s,
+      #   'md5_of_body' => message.md5_of_body.to_s,
+      #   'queue_url' => message.queue_url.to_s,
+      #   'sender_id' => message.attributes['SenderId'].to_s
+      # }
+      #
+      # message
+      message.to_json
     end
   end
 end
