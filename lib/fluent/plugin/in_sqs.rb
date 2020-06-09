@@ -81,12 +81,12 @@ module Fluent::Plugin
       # message.to_json
       # message.body
       # message.body.attributes
-      puts 'message', message
-      puts 'message.body', message.body
-      puts 'JSON.parse(message.body)', JSON.parse(message.body)
-      puts 'JSON.parse(message.body).attribues', JSON.parse(message.body).attributes
-      puts 'JSON.parse(message.body.to_s)', JSON.parse(message.body.to_s)
-      puts 'message.body.to_json', message.body.to_json
+      # puts 'message', message
+      # puts 'message.body', message.body
+      # puts 'JSON.parse(message.body)', JSON.parse(message.body)
+      # puts 'JSON.parse(message.body).attribues', JSON.parse(message.body).attributes
+      # puts 'JSON.parse(message.body.to_s)', JSON.parse(message.body.to_s)
+      # puts 'message.body.to_json', message.body.to_json
       JSON.parse(message.body)
     end
   end
