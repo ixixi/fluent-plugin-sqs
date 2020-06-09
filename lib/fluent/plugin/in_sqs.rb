@@ -55,6 +55,7 @@ module Fluent::Plugin
         visibility_timeout: @visibility_timeout
       ).each do |message|
         record = parse_message(message)
+        puts 'record', record
 
         message.delete if @delete_message
 
