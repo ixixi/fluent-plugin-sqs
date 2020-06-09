@@ -55,7 +55,6 @@ module Fluent::Plugin
         visibility_timeout: @visibility_timeout
       ).each do |message|
         record = parse_message(message)
-        puts 'record', record
 
         message.delete if @delete_message
 
@@ -69,25 +68,6 @@ module Fluent::Plugin
     private
 
     def parse_message(message)
-      # {
-      #   'body' => message.body.to_s,
-      #   'receipt_handle' => message.receipt_handle.to_s,
-      #   'message_id' => message.message_id.to_s,
-      #   'md5_of_body' => message.md5_of_body.to_s,
-      #   'queue_url' => message.queue_url.to_s,
-      #   'sender_id' => message.attributes['SenderId'].to_s
-      # }
-      #
-      # message
-      # message.to_json
-      # message.body
-      # message.body.attributes
-      # puts 'message', message
-      # puts 'message.body', message.body
-      # puts 'JSON.parse(message.body)', JSON.parse(message.body)
-      # puts 'JSON.parse(message.body).attribues', JSON.parse(message.body).attributes
-      # puts 'JSON.parse(message.body.to_s)', JSON.parse(message.body.to_s)
-      # puts 'message.body.to_json', message.body.to_json
       JSON.parse(message.body)
     end
   end
